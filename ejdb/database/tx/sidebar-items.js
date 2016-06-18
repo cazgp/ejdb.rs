@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Transaction","Represents an active transaction."]]});

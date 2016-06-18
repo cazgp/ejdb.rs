@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EncoderError","Possible errors that can arise during encoding."]],"fn":[["encode_document","Attempt to encode a `Document` into a byte stream."],["to_bson","Encode a `T` Serializable into a BSON `Value`."]],"struct":[["Encoder",""]],"type":[["EncoderResult","Alias for `Result<T, EncoderError>`."]]});

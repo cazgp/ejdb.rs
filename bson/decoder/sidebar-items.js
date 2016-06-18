@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DecoderError","Possible errors that can arise during decoding."]],"fn":[["decode_document","Attempt to decode a `Document` from a byte stream."],["from_bson","Decode a BSON `Value` into a `T` Deserializable."]],"struct":[["Decoder",""]],"type":[["DecoderResult","Alias for `Result<T, DecoderError>`."]]});

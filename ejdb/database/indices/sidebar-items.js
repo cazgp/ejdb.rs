@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Index","A builder for an operation on an index of a certain field of an EJDB collection."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DecoderError","Possible errors that can arise during decoding."]],"type":[["DecoderResult","Alias for `Result<T, DecoderError>`."]]});

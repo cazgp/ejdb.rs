@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Transaction` struct in crate `ejdb`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Transaction">
+
+    <title>ejdb::Transaction - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='index.html'>ejdb</a></p><script>window.sidebarCurrent = {name: 'Transaction', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>ejdb</a>::<wbr><a class='struct' href=''>Transaction</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-845' class='srclink' href='../src/ejdb/src/database/tx.rs.html#78-82' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Transaction&lt;'coll, 'db: 'coll&gt; {
+    // some fields omitted
+}</pre><div class='docblock'><p>Represents an active transaction.</p>
+
+<p>This structure is a transaction guard for an EJDB collection. It employs RAII pattern:
+a value of this structure is returned when transaction is started and when this value
+is dropped, the transaction is committed or aborted.</p>
+
+<p>By default when a transaction goes out of scope, it is aborted. This is done because
+of the way how errors are handled in Rust: if you interleave working with an EJDB collection
+with other, potentially failing operations, then it is possible for an error to cause
+an early return, dropping the transaction in progress. In this case aborting the transaction
+is usually the most natural option.</p>
+
+<p>However, it is possible to change the default behavior with <code>set_commit()/set_abort()</code> methods,
+and it is also possible to commit or abort the transaction with <code>commit()</code>/<code>abort()</code> methods.
+<code>finish()</code> method is essentially equivalent to dropping the transaction guard, except that
+it returns a value which may contain an error (for regular drops any errors are ignord).
+<code>will_commit()</code>/<code>will_abort()</code> methods will <code>true</code> if their respective action will be taken
+upon finishing.</p>
+
+<p>In EJDB transactions can only span one collection, therefore transactions created from a
+collection has a direct lifetime dependency on it.</p>
+
+<p>See <code>Collection::begin_transaction()</code> documentation for examples.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;'coll, 'db&gt; <a class='struct' href='../ejdb/struct.Transaction.html' title='ejdb::Transaction'>Transaction</a>&lt;'coll, 'db&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-856' class='srclink' href='../src/ejdb/src/database/tx.rs.html#90-151' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.will_commit' class='method'><code>fn <a href='#method.will_commit' class='fnname'>will_commit</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<div class='docblock'><p>Checks whether this transaction will be committed upon drop.</p>
+
+<p>Returns <code>true</code> if this transaction will be committed when dropped or when <code>finish()</code>
+method is called.</p>
+</div><h4 id='method.will_abort' class='method'><code>fn <a href='#method.will_abort' class='fnname'>will_abort</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<div class='docblock'><p>Checks whether this transaction will be aborted upon drop.</p>
+
+<p>Returns <code>true</code> if this transaction will be aborted when dropped or when <code>finish()</code>
+method is called.</p>
+</div><h4 id='method.set_commit' class='method'><code>fn <a href='#method.set_commit' class='fnname'>set_commit</a>(&amp;mut self)</code></h4>
+<div class='docblock'><p>Makes this transaction to commit when dropped.</p>
+</div><h4 id='method.set_abort' class='method'><code>fn <a href='#method.set_abort' class='fnname'>set_abort</a>(&amp;mut self)</code></h4>
+<div class='docblock'><p>Makes this transaction to abort when dropped.</p>
+</div><h4 id='method.finish' class='method'><code>fn <a href='#method.finish' class='fnname'>finish</a>(self) -&gt; <a class='type' href='../ejdb/types/type.Result.html' title='ejdb::types::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt;</code></h4>
+<div class='docblock'><p>Aborts or commits the transaction depending on the finish mode.</p>
+
+<p>The mode can be changed with <code>set_commit()</code> and <code>set_abort()</code> methods.</p>
+</div><h4 id='method.commit' class='method'><code>fn <a href='#method.commit' class='fnname'>commit</a>(self) -&gt; <a class='type' href='../ejdb/types/type.Result.html' title='ejdb::types::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt;</code></h4>
+<div class='docblock'><p>Attempts to commit this transaction.</p>
+</div><h4 id='method.abort' class='method'><code>fn <a href='#method.abort' class='fnname'>abort</a>(self) -&gt; <a class='type' href='../ejdb/types/type.Result.html' title='ejdb::types::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt;</code></h4>
+<div class='docblock'><p>Attempts to abort this transaction.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl&lt;'coll, 'db&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../ejdb/struct.Transaction.html' title='ejdb::Transaction'>Transaction</a>&lt;'coll, 'db&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-851' class='srclink' href='../src/ejdb/src/database/tx.rs.html#84-88' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.drop' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop' class='fnname'>drop</a>(&amp;mut self)</code></h4>
+<div class='docblock'><p>A method called when the value goes out of scope. <a href="https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "ejdb";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>
